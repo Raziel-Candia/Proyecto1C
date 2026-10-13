@@ -1,13 +1,12 @@
 package mx.edu.utez.Proyecto1C.controller.usuarios;
 
 
+import jakarta.validation.Valid;
+import mx.edu.utez.Proyecto1C.controller.usuarios.dto.RequestCrearUsuarioDTO;
 import mx.edu.utez.Proyecto1C.model.usuario.Usuario;
 import mx.edu.utez.Proyecto1C.service.usuario.UsuarioService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,5 +27,15 @@ public class UsuarioController {
         return ResponseEntity
                 .status(200)
                 .body(this.usuarioService.getAllUsers());
+    }
+
+    @PostMapping
+    public ResponseEntity<Usuario> createUser
+            (@RequestBody @Valid RequestCrearUsuarioDTO payload){
+        return ResponseEntity
+                .status(201)
+                .body(
+                        this.usuarioService.createUser(payload)
+                );
     }
 }
