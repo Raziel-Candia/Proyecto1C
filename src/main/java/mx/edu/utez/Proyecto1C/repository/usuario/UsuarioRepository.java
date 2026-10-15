@@ -13,4 +13,6 @@ public interface UsuarioRepository
 
     //select * from usuarios where username = ?
     Optional<Usuario> findByUsername (String username);
+
+    boolean existsByUsernameAndIdNot(String username, Long id);
 }

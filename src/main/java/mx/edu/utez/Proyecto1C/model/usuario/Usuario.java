@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import mx.edu.utez.Proyecto1C.model.persona.Persona;
 
+import java.util.Date;
+
 @Entity
 @Table(name = "usuarios")
 @Getter
@@ -43,4 +45,7 @@ public class Usuario {
     @OneToOne
     @JoinColumn(name = "personas_id")
     private Persona persona;
+
+
+
 }

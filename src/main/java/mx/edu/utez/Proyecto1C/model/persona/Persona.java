@@ -31,6 +31,9 @@ public class Persona {
     private String correo;
     private String curp;
 
+
+
+
     /*
     @ManyToMany
     @JoinTable(

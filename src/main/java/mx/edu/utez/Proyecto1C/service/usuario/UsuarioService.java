@@ -30,9 +30,9 @@ public class UsuarioService {
     }
 
 
-    public Usuario createUser(RequestCrearUsuarioDTO payload){
+    public Usuario createUser(RequestCrearUsuarioDTO payload) {
         //validar si el username ya existe
-        if(usuarioRepository.findByUsername(payload.getUsername()).isPresent()){
+        if (usuarioRepository.findByUsername(payload.getUsername()).isPresent()) {
             throw new BadRequestException("ya hay un registro con ese usuario");
         }
         //registrar persona
@@ -61,5 +61,6 @@ public class UsuarioService {
         newUser.setPersona(newPersona);
 
         return usuarioRepository.save(newUser);
+
     }
 }
