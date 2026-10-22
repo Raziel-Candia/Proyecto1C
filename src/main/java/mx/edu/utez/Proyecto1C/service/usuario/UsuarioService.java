@@ -33,7 +33,7 @@ public class UsuarioService {
     public Usuario createUser(RequestCrearUsuarioDTO payload) {
         //validar si el username ya existe
         if (usuarioRepository.findByUsername(payload.getUsername()).isPresent()) {
-            throw new BadRequestException("ya hay un registro con ese usuario");
+            throw new BadRequestException("ya hay un registro con este usuario");
         }
         //registrar persona
         Persona newPersona = new Persona();
@@ -44,10 +44,9 @@ public class UsuarioService {
         newPersona.setCorreo(payload.getCorreo());
         newPersona.setCurp(payload.getCurp());
 
-        //creando un registro de persona y obteniendo sus nuevos datos
+
         newPersona = personaRepository.save(newPersona);
 
-        //crear una instancia de usuario y llenarla en base a la info de playload
         Usuario newUser = new Usuario();
         newUser.setUsername(payload.getUsername());
         newUser.setPassword(payload.getPassword());
