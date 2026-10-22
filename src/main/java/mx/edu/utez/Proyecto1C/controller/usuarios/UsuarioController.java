@@ -2,6 +2,7 @@ package mx.edu.utez.Proyecto1C.controller.usuarios;
 
 
 import jakarta.validation.Valid;
+import mx.edu.utez.Proyecto1C.controller.usuarios.dto.ActualiUsuarioDTO;
 import mx.edu.utez.Proyecto1C.controller.usuarios.dto.RequestCrearUsuarioDTO;
 import mx.edu.utez.Proyecto1C.model.usuario.Usuario;
 import mx.edu.utez.Proyecto1C.service.usuario.UsuarioService;
@@ -37,5 +38,35 @@ public class UsuarioController {
                 .body(
                         this.usuarioService.createUser(payload)
                 );
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Usuario> getUserById(@PathVariable Long id) {
+        return ResponseEntity
+                .status(200)
+                .body(this.usuarioService.getUserById(id));
+    }
+
+    @PatchMapping("/{id}/activar")
+    public ResponseEntity<Usuario> activarUsuario(@PathVariable Long id) {
+        return ResponseEntity
+                .status(200)
+                .body(this.usuarioService.activarUsuario(id));
+    }
+
+    @PatchMapping("/{id}/desactivar")
+    public ResponseEntity<Usuario> desactivarUsuario(@PathVariable Long id) {
+        return ResponseEntity
+                .status(200)
+                .body(this.usuarioService.desactivarUsuario(id));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Usuario> actualizarUsuario(
+            @PathVariable Long id,
+            @RequestBody @Valid ActualiUsuarioDTO payload) {
+        return ResponseEntity
+                .status(200)
+          .body(this.usuarioService.actualizarUsuario(id, payload));
     }
 }

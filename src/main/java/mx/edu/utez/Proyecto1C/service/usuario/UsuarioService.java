@@ -1,7 +1,7 @@
 package mx.edu.utez.Proyecto1C.service.usuario;
 
-
 import jakarta.transaction.Transactional;
+import mx.edu.utez.Proyecto1C.controller.usuarios.dto.ActualiUsuarioDTO;
 import mx.edu.utez.Proyecto1C.controller.usuarios.dto.RequestCrearUsuarioDTO;
 import mx.edu.utez.Proyecto1C.exception.customExcepcions.BadRequestException;
 import mx.edu.utez.Proyecto1C.model.persona.Persona;
@@ -15,7 +15,7 @@ import java.util.List;
 
 @Service
 public class UsuarioService {
-    //inyeccion de dependencias
+    // Inyección de dependencias
     private final UsuarioRepository usuarioRepository;
     private final PersonaRepository personaRepository;
 
@@ -23,19 +23,19 @@ public class UsuarioService {
         this.usuarioRepository = usuarioRepository;
         this.personaRepository = personaRepository;
     }
+
     @Transactional
-    // servicios
-    public List<Usuario> getAllUsers(){
+    public List<Usuario> getAllUsers() {
         return usuarioRepository.findAll();
     }
 
-
     public Usuario createUser(RequestCrearUsuarioDTO payload) {
-        //validar si el username ya existe
+        // Validar si el username ya existe
         if (usuarioRepository.findByUsername(payload.getUsername()).isPresent()) {
             throw new BadRequestException("ya hay un registro con este usuario");
         }
-        //registrar persona
+
+        // Registrar persona
         Persona newPersona = new Persona();
         newPersona.setNombres(payload.getNombres());
         newPersona.setPrimerApellido(payload.getPrimerApellido());
@@ -43,7 +43,6 @@ public class UsuarioService {
         newPersona.setFechaNacimiento(payload.getFechaNacimiento());
         newPersona.setCorreo(payload.getCorreo());
         newPersona.setCurp(payload.getCurp());
-
 
         newPersona = personaRepository.save(newPersona);
 
@@ -56,10 +55,39 @@ public class UsuarioService {
                 Roles.valueOf(payload.getRol())
         );
 
-        //relacionar la persona registrada con este nuevo usuario
+
         newUser.setPersona(newPersona);
 
         return usuarioRepository.save(newUser);
+    }
 
+
+    public Usuario getUserById(Long id) {
+        return usuarioRepository.findById(id)
+                .orElseThrow(() -> new BadRequestException("Usuario no encontrado con el id: " + id));
+    }
+
+
+    @Transactional
+    public Usuario activarUsuario(Long id) {
+        Usuario usuario = getUserById(id);
+        usuario.setEnable(true);
+        return usuarioRepository.save(usuario);
+    }
+
+
+    @Transactional
+    public Usuario desactivarUsuario(Long id) {
+        Usuario usuario = getUserById(id);
+        usuario.setEnable(false);
+        return usuarioRepository.save(usuario);
+    }
+
+
+    @Transactional
+    public Usuario actualizarUsuario(Long id, ActualiUsuarioDTO payload) {
+        Usuario usuario = getUserById(id);
+
+        return usuarioRepository.save(usuario);
     }
 }
